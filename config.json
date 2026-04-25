@@ -1,13 +1,14 @@
 {
   "users": [
     {
-      "name": "Il tuo nome",
-      "lat": 45.0,
-      "lon": 9.0,
+      "name": "Io",
+      "lat": 46.2465854,
+      "lon": 9.0245363,
       "radius_km": 40,
       "grid_step_km": 5,
       "search_hours": 72,
-      "note": "Modifica solo lat e lon usando Google Maps"
+      "check_sun": true,
+      "check_moon": true
     }
   ]
 }
