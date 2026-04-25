@@ -12,9 +12,6 @@ CHAT_ID = os.environ["TELEGRAM_CHAT_ID"]
 
 LOCAL_TZ = ZoneInfo("Europe/Rome")
 
-# Cerca nelle prossime ... ore
-SEARCH_HOURS = user["search_hours"]
-
 # Primo passaggio grossolano
 COARSE_STEP_SECONDS = 10
 
@@ -38,6 +35,8 @@ LAT = user["lat"]
 LON = user["lon"]
 RADIUS_KM = user["radius_km"]
 GRID_STEP_KM = user["grid_step_km"]
+# Cerca nelle prossime ... ore
+SEARCH_HOURS = user["search_hours"]
 
 def send_telegram(text):
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
