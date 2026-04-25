@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ISS Config App</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    input { width: 100%; margin: 5px 0; }
+    textarea { width: 100%; height: 150px; }
+    button { padding: 10px; margin-top: 10px; }
+  </style>
+</head>
+<body>
+
+<h2>📍 Config ISS Bot</h2>
+
+<label>Latitudine</label>
+<input id="lat" type="number" step="0.0001">
+
+<label>Longitudine</label>
+<input id="lon" type="number" step="0.0001">
+
+<label>Raggio (km)</label>
+<input id="radius" type="number" value="40">
+
+<label>Ore da analizzare</label>
+<input id="hours" type="number" value="72">
+
+<button onclick="generate()">Genera config.json</button>
+
+<h3>📄 Copia questo:</h3>
+<textarea id="output"></textarea>
+
+<script>
+function generate() {
+  const config = {
+    users: [{
+      name: "Utente",
+      lat: parseFloat(document.getElementById("lat").value),
+      lon: parseFloat(document.getElementById("lon").value),
+      radius_km: parseInt(document.getElementById("radius").value),
+      grid_step_km: 5,
+      search_hours: parseInt(document.getElementById("hours").value)
+    }]
+  };
+
+  document.getElementById("output").value = JSON.stringify(config, null, 2);
+}
+</script>
+
+</body>
+</html>
