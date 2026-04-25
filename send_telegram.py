@@ -1,5 +1,6 @@
 import os
 import math
+import json
 import requests
 from datetime import datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
@@ -9,16 +10,18 @@ from skyfield.api import load, wgs84
 BOT_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
 CHAT_ID = os.environ["TELEGRAM_CHAT_ID"]
 
-LAT = 46.2465854
-LON = 9.0245363
+config = load_config()
+user = config["users"][0]
 
-RADIUS_KM = 40
-GRID_STEP_KM = 5
+LAT = user["lat"]
+LON = user["lon"]
+RADIUS_KM = user["radius_km"]
+GRID_STEP_KM = user["grid_step_km"]
 
 LOCAL_TZ = ZoneInfo("Europe/Rome")
 
-# Cerca nelle prossime 72 ore
-SEARCH_HOURS = 72
+# Cerca nelle prossime ... ore
+SEARCH_HOURS = user["search_hours"]
 
 # Primo passaggio grossolano
 COARSE_STEP_SECONDS = 10
@@ -32,6 +35,9 @@ MOON_RADIUS_KM = 1_737.4
 
 stations_url = "https://celestrak.org/NORAD/elements/stations.txt"
 
+def load_config():
+    with open("config.json", "r", encoding="utf-8") as f:
+        return json.load(f)
 
 def send_telegram(text):
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
