@@ -1,9 +1,9 @@
 {
   "users": [
     {
-      "name": "Io",
-      "lat": 46.2465854,
-      "lon": 9.0245363,
+      "name": "Mau",
+      "lat": 46.04646765374018,
+      "lon": 8.98749320580623,
       "radius_km": 40,
       "grid_step_km": 5,
       "search_hours": 72,
