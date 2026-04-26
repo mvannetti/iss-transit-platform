@@ -12,6 +12,20 @@ GitHub Actions → Python (calcoli astronomici avanzati) → ISS + Sole + Luna �
 
 ---
 
+## 🍴 Usa il progetto (fork)
+
+Per usare questo bot devi prima copiarlo nel tuo account GitHub.
+
+### Metodo consigliato
+
+1. Clicca su Fork in alto a destra
+2. Seleziona il tuo account
+3. Attendi la creazione del repository
+
+👉 Ora hai una copia tua del progetto e puoi modificarlo liberamente.
+
+---
+
 ## ✨ Funzionalità
 
 - 📡 Calcolo posizione ISS, Sole e Luna (Skyfield)
@@ -63,7 +77,7 @@ json "chat": {   "id": 123456789 }
 
 ### 3. 🔐 GitHub Secrets
 
-Vai su:
+Nel tuo repository (fork), vai su:
 
 Settings → Secrets → Actions
 
@@ -79,7 +93,7 @@ Apri la web app:
 
 app/index.html
 
-Oppure via GitHub Pages.
+Oppure tramite GitHub Pages.
 
 Poi:
 
