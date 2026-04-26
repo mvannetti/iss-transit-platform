@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>ISS Transit Config</title>
 
-  <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 
   <style>
@@ -14,7 +13,7 @@
     }
 
     #map {
-      height: 70vh;
+      height: 65vh;
       width: 100%;
     }
 
@@ -25,8 +24,14 @@
     button {
       padding: 10px 15px;
       font-size: 16px;
-      margin-top: 10px;
+      margin: 6px 4px 6px 0;
       cursor: pointer;
+    }
+
+    pre {
+      background: #f3f3f3;
+      padding: 12px;
+      overflow-x: auto;
     }
   </style>
 </head>
@@ -35,6 +40,123 @@
 
   <div id="map"></div>
 
+  <div class="panel">
+    <p><b>Lat:</b> <span id="lat">-</span></p>
+    <p><b>Lon:</b> <span id="lon">-</span></p>
+
+    <button onclick="useGps()">📍 Usa posizione attuale</button>
+    <button onclick="generateConfig()">Genera config.json</button>
+    <button onclick="downloadConfig()">Scarica config.json</button>
+
+    <pre id="output"></pre>
+  </div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+  <script>
+    const map = L.map('map').setView([46.8, 8.3], 7);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap'
+    }).addTo(map);
+
+    let marker = null;
+    let selectedLat = null;
+    let selectedLon = null;
+    let currentConfig = null;
+
+    function setPosition(lat, lon, zoom = 13) {
+      selectedLat = lat;
+      selectedLon = lon;
+
+      document.getElementById("lat").innerText = selectedLat.toFixed(6);
+      document.getElementById("lon").innerText = selectedLon.toFixed(6);
+
+      if (marker) {
+        map.removeLayer(marker);
+      }
+
+      marker = L.marker([selectedLat, selectedLon]).addTo(map);
+      map.setView([selectedLat, selectedLon], zoom);
+
+      generateConfig();
+    }
+
+    map.on('click', function(e) {
+      setPosition(e.latlng.lat, e.latlng.lng, map.getZoom());
+    });
+
+    function useGps() {
+      if (!navigator.geolocation) {
+        alert("GPS non supportato da questo browser.");
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        function(position) {
+          setPosition(
+            position.coords.latitude,
+            position.coords.longitude,
+            14
+          );
+        },
+        function(error) {
+          alert("Impossibile ottenere la posizione GPS. Controlla i permessi del browser.");
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0
+        }
+      );
+    }
+
+    function generateConfig() {
+      if (selectedLat === null || selectedLon === null) {
+        alert("Clicca sulla mappa oppure usa il GPS prima.");
+        return;
+      }
+
+      currentConfig = {
+        users: [
+          {
+            lat: Number(selectedLat.toFixed(6)),
+            lon: Number(selectedLon.toFixed(6)),
+            radius_km: 40,
+            grid_step_km: 5,
+            search_hours: 24
+          }
+        ]
+      };
+
+      document.getElementById("output").innerText =
+        JSON.stringify(currentConfig, null, 2);
+    }
+
+    function downloadConfig() {
+      if (currentConfig === null) {
+        generateConfig();
+      }
+
+      if (currentConfig === null) {
+        return;
+      }
+
+      const json = JSON.stringify(currentConfig, null, 2);
+      const blob = new Blob([json], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "config.json";
+      a.click();
+
+      URL.revokeObjectURL(url);
+    }
+  </script>
+
+</body>
+</html>
   <div class="panel">
     <p><b>Lat:</b> <span id="lat">-</span></p>
     <p><b>Lon:</b> <span id="lon">-</span></p>
